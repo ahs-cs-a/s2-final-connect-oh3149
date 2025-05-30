@@ -10,4 +10,8 @@ public class QuitMove extends Move {
         super(-1, player);
         this.partingMessage = message;
     }
+
+    public String getMessage(){
+        return partingMessage;
+    }
 }
