@@ -2,12 +2,14 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 
-public class Connect4 extends JPanel implements MouseListener{
+public class Connect4 extends JPanel implements MouseListener, KeyListener{
 
     // These control the size of the board.  The traditional Connect 4 board is 
     // seven spaces wide by six spaces high
@@ -25,6 +27,9 @@ public class Connect4 extends JPanel implements MouseListener{
     // this contains the ordered list of players in the game
     private ArrayList<Player> players;
     private int currentPlayerIndex = 0;
+
+
+
     
 
      /** creates the connect four interface with the specified number of rows and colonms
@@ -34,6 +39,8 @@ public class Connect4 extends JPanel implements MouseListener{
     public Connect4(int rows, int cols ) {
         myFrame = new JFrame();
         this.myBoard = new Board(rows, cols);
+        addKeyListener(this);
+        setFocusable(true);
         addMouseListener(this);
         // the hard numbers at the end are for the menubar at the top and side handles
         myFrame.setSize( myBoard.getCols() * (pieceSize + spacing) + spacing + 10,
@@ -87,6 +94,9 @@ public class Connect4 extends JPanel implements MouseListener{
     private void takeTurn(Move move) {
         if(myBoard.boardFilled()){
             message = "The Game is tie - no more moves left";
+            repaint();
+        } else if(!myBoard.possibleMove(move)){
+            message = "There is nowhere to move in this column: " + move.getColumn();
             repaint();
         } else{
             myBoard.addPiece(move);
@@ -143,6 +153,25 @@ public class Connect4 extends JPanel implements MouseListener{
     }
 
     public void mouseReleased(MouseEvent e) {
+    }
+
+    public void keyTyped(KeyEvent e){
+        
+    }
+
+    public void keyReleased(KeyEvent e){
+
+    }
+
+    public void keyPressed(KeyEvent e){
+        if(e.getKeyCode() == KeyEvent.VK_Q){
+            QuitMove quitter = new QuitMove(getCurrentPlayer(), getCurrentPlayer() + "is quitting");
+            message = quitter.getMessage();
+            repaint();
+        }
+        if(e.getKeyCode() == KeyEvent.VK_B){
+            if(getCurrentPlayer().hasBomb())
+        } 
     }
     
     
